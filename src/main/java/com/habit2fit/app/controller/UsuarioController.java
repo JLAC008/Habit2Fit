@@ -33,12 +33,6 @@ public class UsuarioController {
            
             String userId = usuarioService.guardarOActualizarUsuario(usuario);
 
-            // Consideración del código de estado:
-            // - 201 Created es ideal si SIEMPRE se crea.
-            // - 200 OK es común para actualizaciones exitosas o upserts exitosos.
-            // Dado que no sabemos fácilmente si fue creación o actualización sin una lectura previa,
-            // devolver 200 OK es una opción razonable y común para operaciones tipo "upsert".
-            // Devolveremos el ID como confirmación.
             return ResponseEntity.ok(userId); // Devolvemos 200 OK y el ID
 
         } catch (IllegalArgumentException e) {

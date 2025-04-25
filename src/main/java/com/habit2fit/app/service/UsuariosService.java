@@ -4,7 +4,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
@@ -17,6 +18,8 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class UsuariosService {
+	
+	private static final Logger logger = LogManager.getLogger(UsuariosService.class);
 	private static final String COLLECTION_NAME = "usuarios";
 	@Autowired
     private Firestore firestore; 
@@ -41,7 +44,7 @@ public class UsuariosService {
         // Esperar a que la operación termine
         future.get();
 
-        System.out.println("Usuario guardado/actualizado con ID: " + customDocumentId);
+        logger.info("Usuario guardado/actualizado con ID: " + customDocumentId);
         // Devolvemos el mismo ID que usamos
         return customDocumentId;
     }
@@ -55,10 +58,11 @@ public class UsuariosService {
 
         if (document.exists()) {
             UsuariosDTO usuario = document.toObject(UsuariosDTO.class); // Mapea el documento al DTO
-            System.out.println("Usuario encontrado: " + usuario);
+            usuario.setIdUsuario(documentId);
+            logger.info("Usuario encontrado: " + usuario);
             return usuario;
         } else {
-            System.out.println("No se encontró ningún usuario con ID: " + documentId);
+            logger.error("No se encontró ningún usuario con ID: " + documentId);
             return null;
         }
     }
@@ -67,6 +71,7 @@ public class UsuariosService {
 	        DocumentReference docRef = getUsuariosCollection().document(documentId);
 	        ApiFuture<WriteResult> future = docRef.delete();
 	        WriteResult result = future.get();
+	        logger.info("Usuario eliminado en: " + result.getUpdateTime());
 	        return "Usuario eliminado en: " + result.getUpdateTime();
 	   }
 }
