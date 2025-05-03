@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import com.habit2fit.app.dto.UsuariosDTO;
+import java.util.List;
+
+import com.habit2fit.app.model.Usuarios;
 import com.habit2fit.app.service.UsuariosService;
 
 @RestController
@@ -28,7 +29,7 @@ public class UsuarioController {
     }
 
     @PostMapping // Sigue siendo POST, pero ahora hace "upsert"
-    public ResponseEntity<String> crearOActualizarUsuario(@RequestBody UsuariosDTO usuario) { // Nombre del método actualizado opcionalmente
+    public ResponseEntity<String> crearOActualizarUsuario(@RequestBody Usuarios usuario) { // Nombre del método actualizado opcionalmente
         try {
            
             String userId = usuarioService.guardarOActualizarUsuario(usuario);
@@ -48,10 +49,10 @@ public class UsuarioController {
         }
     }
     
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuariosDTO> getUsuarioPorId(@PathVariable String id) {
+    @GetMapping("id/{id}")
+    public ResponseEntity<Usuarios> getUsuarioPorId(@PathVariable String id) {
         try {
-            UsuariosDTO usuario = usuarioService.getUsuarioPorId(id);
+            Usuarios usuario = usuarioService.getUsuarioPorId(id);
             if (usuario != null) {
                 return ResponseEntity.ok(usuario); // Devuelve el usuario y status 200 OK
             } else {
@@ -62,6 +63,45 @@ public class UsuarioController {
              Thread.currentThread().interrupt();
              // Devuelve un error interno del servidor
              throw new ResponseStatusException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Error al obtener usuario", e);
+        }
+    }
+    
+    
+    @GetMapping("correo/{correo}")
+    public ResponseEntity<List<Usuarios>> getUsuariosPorCorreo(@PathVariable String correo) {
+        try {
+            List<Usuarios> usuarios = usuarioService.getUsuariosPorCorreo(correo);
+            if (!usuarios.isEmpty()) {
+                return ResponseEntity.ok(usuarios);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ResponseStatusException(
+                HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                "Error al obtener usuarios por correo",
+                e
+            );
+        }
+    }
+    
+    @GetMapping("nombre/{nombre}")
+    public ResponseEntity<List<Usuarios>> getUsuariosPorNombre(@PathVariable String nombre) {
+        try {
+            List<Usuarios> usuarios = usuarioService.getUsuariosPorNombre(nombre);
+            if (!usuarios.isEmpty()) {
+                return ResponseEntity.ok(usuarios);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ResponseStatusException(
+                HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                "Error al obtener usuarios por nombre",
+                e
+            );
         }
     }
     

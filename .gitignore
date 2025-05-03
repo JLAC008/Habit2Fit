@@ -34,3 +34,4 @@ build/
 src/main/resources/firebase-service-account.json
 logs/Habit2Fit.log
 src/main/resources/log4j2.xml
+logs/Habit2Fit-2025-04-25.log.gz

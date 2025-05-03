@@ -1,32 +1,48 @@
 package com.habit2fit.app.model;
 
+import com.google.cloud.firestore.annotation.Exclude;
+
 public class Usuarios {
-	private String id;
-	private String nombre;
-	private String email;
+    private String correo;
+    private String idUsuario; // Este parece ser un ID propio de tu lógica
+    private String nombre;
 
-	public String getId() {
-		return id;
-	}
+    // --- Constructores ---
+    public Usuarios() {}
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public Usuarios(String correo, String idUsuario, String nombre) {
+        this.correo = correo;
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public String getCorreo() {
+        return correo;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+    @Exclude
+    public String getIdUsuario() {
+        return idUsuario;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+   
+
+	
+	
+	
 }
