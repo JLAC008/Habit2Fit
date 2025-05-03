@@ -1,6 +1,7 @@
 package com.habit2fit.app.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -35,24 +36,43 @@ public class UsuariosService {
 	
 	
 	public String guardarOActualizarUsuario(Usuarios usuario) throws ExecutionException, InterruptedException {
-        // Validar que el ID personalizado (idUsuario) se haya proporcionado
-        if (!StringUtils.hasText(usuario.getIdUsuario())) {
-             throw new IllegalArgumentException("El campo 'idUsuario' no puede ser nulo ni vacío para usarlo como ID de documento.");
-        }
+	    // Validar que el ID personalizado (idUsuario) se haya proporcionado
+	    if (!StringUtils.hasText(usuario.getIdUsuario())) {
+	        throw new IllegalArgumentException("El campo 'idUsuario' no puede ser nulo ni vacío.");
+	    }
 
-        String customDocumentId = usuario.getIdUsuario();
-        DocumentReference docRef = getUsuariosCollection().document(customDocumentId);
+	    String customDocumentId = usuario.getIdUsuario();
+	    DocumentReference docRef = getUsuariosCollection().document(customDocumentId);
 
-        // Usar set() para crear o sobrescribir.
-        ApiFuture<WriteResult> future = docRef.set(usuario);
+	    // Comprobar si el documento ya existe
+	    ApiFuture<DocumentSnapshot> future = docRef.get();
+	    DocumentSnapshot documentSnapshot = future.get();
 
-        // Esperar a que la operación termine
-        future.get();
+	    // Si el documento no existe, se asigna la fecha de registro
+	    if (!documentSnapshot.exists()) {
+	        // Asignar la fecha de registro solo si el documento es nuevo
+	        usuario.setFechaRegistro(new Date());  // Asigna la fecha actual si es un nuevo documento
+	    } else {
+	        // Si el documento ya existe, mantener la fecha de registro y solo actualizar la fecha de actualización
+	        // Recuperamos el valor actual de fechaRegistro si ya existe
+	        Date fechaRegistroActual = documentSnapshot.getDate("fechaRegistro");
+	        usuario.setFechaRegistro(fechaRegistroActual);  // No modificar fechaRegistro
 
-        logger.info("Usuario guardado/actualizado con ID: " + customDocumentId);
-        // Devolvemos el mismo ID que usamos
-        return customDocumentId;
-    }
+	        // Asignar la fecha de actualización
+	        usuario.setFechaUpdate(new Date());  // Asigna la fecha de actualización
+	    }
+
+	    // Usar set() para crear o sobrescribir
+	    ApiFuture<WriteResult> writeResult = docRef.set(usuario);
+
+	    // Esperar a que la operación termine
+	    writeResult.get();
+
+	    logger.info("Usuario guardado/actualizado con ID: " + customDocumentId);
+
+	    // Devolvemos el mismo ID que usamos
+	    return customDocumentId;
+	}
 	
 	
 	
