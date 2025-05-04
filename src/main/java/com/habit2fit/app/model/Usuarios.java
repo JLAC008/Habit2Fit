@@ -10,21 +10,63 @@ public class Usuarios {
     private String nombre;
     private Date fechaRegistro;
     private Date fechaUpdate;
+    private String genero;
+    private Double altura;
+    private Integer edad;
+    private Date fechaNacimiento;
 
     // --- Constructores ---
     public Usuarios() {}
 
-    public Usuarios(String correo, String idUsuario, String nombre, Date fechaRegistro, Date fechaUpdate) {
+    public Usuarios(String correo, String idUsuario, String nombre,
+    		Date fechaRegistro, Date fechaUpdate, String genero, Double altura,
+    		Integer edad, Date fechaNacimiento) {
         this.correo = correo;
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.fechaRegistro = fechaRegistro;
         this.fechaUpdate = fechaUpdate;
+        this.genero = genero;
+        this.altura = altura;
+        this.edad = edad;
+        this.fechaNacimiento = fechaNacimiento;
     }
     
     
 
-    public Date getFechaUpdate() {
+    public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public Integer getEdad() {
+		return edad;
+	}
+
+	public void setEdad(Integer edad) {
+		this.edad = edad;
+	}
+
+	public Double getAltura() {
+		return altura;
+	}
+
+	public void setAltura(Double altura) {
+		this.altura = altura;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public Date getFechaUpdate() {
 		return fechaUpdate;
 	}
 

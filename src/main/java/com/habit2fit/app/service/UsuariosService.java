@@ -1,5 +1,8 @@
 package com.habit2fit.app.service;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -60,6 +63,15 @@ public class UsuariosService {
 
 	        // Asignar la fecha de actualización
 	        usuario.setFechaUpdate(new Date());  // Asigna la fecha de actualización
+	    }
+	    
+	    if (usuario.getFechaNacimiento() != null) {
+	        LocalDate birthDate = usuario.getFechaNacimiento().toInstant()
+	            .atZone(ZoneId.systemDefault())
+	            .toLocalDate();
+	        LocalDate currentDate = LocalDate.now();
+	        int age = Period.between(birthDate, currentDate).getYears();
+	        usuario.setEdad(age);
 	    }
 
 	    // Usar set() para crear o sobrescribir
