@@ -5,16 +5,16 @@ public class DatosUsuarios {
 	    private Double peso;
 	    private Integer edad;
 	    private Double altura;
-	    private Long idTipoCuerpo;
+	    private Boolean ejercicio;
 
 	    // --- Constructores ---
 	    public DatosUsuarios() {}
 
-	    public DatosUsuarios(String idUsuario, Double peso, Integer edad,Long idTipoCuerpo, Double altura) {
+	    public DatosUsuarios(String idUsuario, Double peso, Integer edad,Boolean ejercicio, Double altura) {
 	        this.idUsuario = idUsuario;
 	        this.peso = peso;
 	        this.edad = edad;
-	        this.idTipoCuerpo = idTipoCuerpo;
+	        this.ejercicio = ejercicio;
 	        this.altura = altura;
 	    }
 	    
@@ -43,20 +43,20 @@ public class DatosUsuarios {
 			this.edad = edad;
 		}
 
-		public Long getIdTipoCuerpo() {
-			return idTipoCuerpo;
-		}
-
-		public void setIdTipoCuerpo(Long idTipoCuerpo) {
-			this.idTipoCuerpo = idTipoCuerpo;
-		}
-
 		public Double getAltura() {
 			return altura;
 		}
 
 		public void setAltura(Double altura) {
 			this.altura = altura;
+		}
+
+		public Boolean getEjercicio() {
+			return ejercicio;
+		}
+
+		public void setEjercicio(Boolean ejercicio) {
+			this.ejercicio = ejercicio;
 		}
 		
 	    
