@@ -28,8 +28,8 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping // Sigue siendo POST, pero ahora hace "upsert"
-    public ResponseEntity<String> crearOActualizarUsuario(@RequestBody Usuarios usuario) { // Nombre del método actualizado opcionalmente
+    @PostMapping //"Upsert"
+    public ResponseEntity<String> crearOActualizarUsuario(@RequestBody Usuarios usuario) {
         try {
            
             String userId = usuarioService.guardarOActualizarUsuario(usuario);
@@ -40,7 +40,6 @@ public class UsuarioController {
             // Error si el idUsuario no se proporcionó en el JSON
              throw new ResponseStatusException(HttpStatus.SC_BAD_REQUEST, e.getMessage(), e); // Usa HttpStatus de Spring
         } catch (ExecutionException e) {
-            // Ya no necesitamos verificar AlreadyExistsException específicamente para .set()
             // Capturamos otros errores de ejecución generales de Firestore.
             throw new ResponseStatusException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Error al guardar o actualizar usuario", e); // Usa HttpStatus de Spring
         } catch (InterruptedException e) {
@@ -113,7 +112,6 @@ public class UsuarioController {
              return ResponseEntity.ok("Eliminado: " + deleteTime);
         } catch (ExecutionException | InterruptedException e) {
              Thread.currentThread().interrupt();
-             // Podrías verificar si el error fue porque no existía y devolver 404
              throw new ResponseStatusException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Error al eliminar usuario", e);
         }
     }

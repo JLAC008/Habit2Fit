@@ -6,7 +6,7 @@ import com.google.cloud.firestore.annotation.Exclude;
 
 public class Usuarios {
     private String correo;
-    private String idUsuario; // Este parece ser un ID propio de tu lógica
+    private String idUsuario;
     private String nombre;
     private Date fechaRegistro;
     private Date fechaUpdate;

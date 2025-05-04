@@ -22,7 +22,7 @@ public class DatosUsuarioController {
 	        this.datosUsuariosService = datosUsuariosService;
 	    }
 	 
-	 @PostMapping // Sigue siendo POST, pero ahora hace "upsert"
+	 @PostMapping //"Upsert"
 	    public ResponseEntity<String> crearOActualizarUsuario(@RequestBody DatosUsuarios datosUsuarios) { // Nombre del método actualizado opcionalmente
 	        try {
 	           
@@ -34,7 +34,6 @@ public class DatosUsuarioController {
 	            // Error si el idUsuario no se proporcionó en el JSON
 	             throw new ResponseStatusException(HttpStatus.SC_BAD_REQUEST, e.getMessage(), e); // Usa HttpStatus de Spring
 	        } catch (ExecutionException e) {
-	            // Ya no necesitamos verificar AlreadyExistsException específicamente para .set()
 	            // Capturamos otros errores de ejecución generales de Firestore.
 	            throw new ResponseStatusException(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Error al guardar o actualizar usuario", e); // Usa HttpStatus de Spring
 	        } catch (InterruptedException e) {
