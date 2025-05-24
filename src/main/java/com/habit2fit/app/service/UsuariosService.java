@@ -33,6 +33,9 @@ public class UsuariosService {
 	@Autowired
     private Firestore firestore; 
 	
+	@Autowired
+	private EmailService emailService;
+	
 	private CollectionReference getUsuariosCollection() {
         return firestore.collection(COLLECTION_NAME);
     }
@@ -79,6 +82,8 @@ public class UsuariosService {
 
 	    // Esperar a que la operación termine
 	    writeResult.get();
+	    
+	    emailService.sendEmail();
 
 	    logger.info("Usuario guardado/actualizado con ID: " + customDocumentId);
 
